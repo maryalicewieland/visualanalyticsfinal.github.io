@@ -10,12 +10,14 @@ h1 {
     padding: 10px;
 }
 
+/* styles tab container */
 .tabs {
     display: flex;
     gap: 2px;
     margin-bottom: 10px;
 }
 
+/*styles for individual tabs*/
 .tab {
     padding: 8px 16px;
     border: 2px solid #e8e8e8;

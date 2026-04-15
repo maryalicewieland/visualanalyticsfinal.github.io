@@ -1,6 +1,7 @@
 // resourced used:
 //      tabs: 
 //      1) https://www.w3schools.com/howto/howto_js_tabs.asp
+//      2) 
 
 // make tabs
 const tabs = document.querySelectorAll(".tab");
@@ -19,6 +20,28 @@ tabs.forEach(tab => {
         tab.classList.add("active");
         document.getElementById(target).classList.add("active");
 
-        // enter function to change charts here
+        //Function to change charts
+        updateChart(target)
     })
 })
+
+// draw total emissions bar graph
+function drawTotalChart() {
+    
+}
+
+//draw scope 3 chart
+function drawScope3Chart() {
+
+}
+
+
+// function to render chart on tab switch accordingly
+function updateChart(tab) {
+    if (tab == "total") {
+        drawTotalChart();
+    }
+    else if (tab == "scope3") {
+        drawScope3Chart();
+    }
+}
