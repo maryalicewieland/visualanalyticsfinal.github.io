@@ -94,7 +94,66 @@ function drawTotalChart() {
 
 // draw scope 3 chart
 function drawScope3Chart() {
+    const svgID = "#scope3-chart"
+    clearChart(svgID);
 
+    const svg = d3.select(svgID);
+    // pull height and width from svg in html
+    const width = 800;
+    const height = 600;
+    // margin helps labels sit right
+    const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+    svg.attr("width", width).attr("height", height);
+
+    d3.csv("data/Scope3.csv").then(data => {
+        data.forEach(d => {
+        d["Faculty Total"] = +d["Faculty Total"];
+        d["Staff Total"] = +d["Staff Total"];
+        d["Air"] = +d["Air"];
+    });
+
+    const keys = ["Faculty Total", "Staff Total", "Air"];
+    const stack = d3.stack().keys(keys);
+    const stackedData = stack(data);
+
+    const x = d3.scaleBand()
+        .domain(data.map(d => d["Fiscal Year"]))
+        .range([margin.left, width - margin.right])
+        .padding(0.2);
+    
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(data, d =>
+        d["Faculty Total"] + d["Staff Total"] + d["Air"]
+        )])
+        .nice()
+        .range([height - margin.bottom, margin.top]);
+
+    const color = d3.scaleOrdinal()
+        .domain(keys)
+        .range(["#6866e3", "#27be68", "#f55353"]);
+    
+    svg.selectAll("g.layer")
+        .data(stackedData)
+        .join("g")
+        .attr("fill", d => color(d.key))
+        .selectAll("rect")
+        .data(d => d)
+        .join("rect")
+        .attr("x", d => x(d.data["Fiscal Year"]))
+        .attr("y", d => y(d[1]))
+        .attr("height", d => y(d[0]) - y(d[1]))
+        .attr("width", x.bandwidth());
+
+    svg.append("g")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(x));
+
+    svg.append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y));
+    
+    });
 }
 
 
