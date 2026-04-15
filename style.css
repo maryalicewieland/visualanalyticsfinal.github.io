@@ -3,6 +3,13 @@ body {
     font-family:Arial, Helvetica, sans-serif;
 }
 
+h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
 .tabs {
     display: flex;
     gap: 2px;
