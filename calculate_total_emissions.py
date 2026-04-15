@@ -23,6 +23,8 @@ scope3 = pd.merge(faculty[["Fiscal Year", "Faculty Total"]],
                   on="Fiscal Year", how="outer")
 scope3 = pd.merge(scope3, air, on="Fiscal Year", how="outer")
 scope3 = scope3.fillna(0)
+#export scope 3 to be used later
+scope3.to_csv("data/Scope3.csv", index=False)
 scope3["Scope 3"] = scope3["Faculty Total"] + scope3["Staff Total"] + scope3["Air"]
 scope3 = scope3[["Fiscal Year", "Scope 3"]]
 
