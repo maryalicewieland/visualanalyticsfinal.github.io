@@ -3,12 +3,28 @@
 //      1) https://www.w3schools.com/howto/howto_js_tabs.asp
 //      2) https://education.molssi.org/python-data-science-chemistry/data_processing_cleaning/pandas-datacleaning.html
 //      3) https://d3-graph-gallery.com/graph/barplot_stacked_basicWide.html 
+//      line graph: 
+//      1) https://d3-graph-gallery.com/graph/line_basic.html
+//      2) https://d3js.org/d3-shape/line
+//      3) https://observablehq.com/@d3/bar-line-chart
+//      tooltip:
+//      1) https://d3-graph-gallery.com/graph/interactivity_tooltip.html
 
 // make tabs
 const tabs = document.querySelectorAll(".tab");
 const contents = document.querySelectorAll(".content");
 
-// handle logic in selecting tabs by adding event listener so when tab is clicked on the css class active is added or deleted, showing and hiding content as needed. This should scale up well if we decide to add another tab.
+const tooltip = d3.select("body")
+    .append("div")
+    .style("position", "absolute")
+    .style("background", "white")
+    .style("padding", "6px 10px")
+    .style("border", "1px solid #ccc")
+    .style("border-radius", "4px")
+    .style("opacity", 0);
+
+// handle logic in selecting tabs by adding event listener so when tab is clicked on the css class active is added or deleted, 
+// showing and hiding content as needed. This should scale up well if we decide to add another tab.
 tabs.forEach(tab => {
     tab.addEventListener("click", () => {
         const target = tab.dataset.tab;
@@ -23,10 +39,10 @@ tabs.forEach(tab => {
 
         //Function to change charts
         drawTotalChart();
+        drawTimeChart();
         updateChart(target)
     })
 })
-
 
 // draw total emissions bar graph
 function drawTotalChart() {
@@ -79,7 +95,10 @@ function drawTotalChart() {
         .attr("x", d => x(d.data["Fiscal Year"]))
         .attr("y", d => y(d[1]))
         .attr("height", d => y(d[0]) - y(d[1]))
-        .attr("width", x.bandwidth());
+        .attr("width", x.bandwidth())
+        .attr("class", "segment") 
+        .on("mouseover", hoverOnBar)
+        .on("mouseout", hoverOutBar);
 
     svg.append("g")
         .attr("transform", `translate(0,${height - margin.bottom})`)
@@ -90,6 +109,102 @@ function drawTotalChart() {
         .call(d3.axisLeft(y));
     
     });
+}
+
+function drawTimeChart() {
+    const svgID = "#time-chart"
+    clearChart(svgID);
+    const svg = d3.select(svgID);
+    const width = 600; 
+    const height = 400; 
+    const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+    svg.attr("width", width).attr("height", height);
+
+    d3.csv("data/total.csv").then(function(data) {
+        data.forEach(d => {
+        d["Scope 1"] = +d["Scope 1"];
+        d["Scope 2"] = +d["Scope 2"];
+        d["Scope 3"] = +d["Scope 3"];
+
+        d.total = d["Scope 1"] + d["Scope 2"] + d["Scope 3"]});
+
+    const x = d3.scalePoint()
+        .domain(data.map(d => d["Fiscal Year"]))
+        .range([margin.left, width - margin.right])
+
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.total)])
+        .nice()
+        .range([height - margin.bottom, margin.top]);
+    
+    //hidden bar graph
+    barWidth = 25
+    svg.selectAll(".hiddenBars")
+     .data(data)
+     .enter()
+     .append("rect")
+     .attr("x", d => x(d["Fiscal Year"]) - barWidth / 2)
+     .attr("y", d => y(d.total))
+     .attr("height", d => y(0) - y(d.total))
+     .attr("width", barWidth)
+     .attr("fill","lightblue")
+     .attr("class", "hiddenBars") 
+    
+    const totalLine = d3.line()
+        .x(d => x(d["Fiscal Year"]))
+        .y(d => y(d.total));
+    
+    const line1 = d3.line()
+        .x(d => x(d["Fiscal Year"]))
+        .y(d => y(d["Scope 1"]));
+
+    const line2 = d3.line()
+        .x(d => x(d["Fiscal Year"]))
+        .y(d => y(d["Scope 2"]));
+
+    const line3 = d3.line()
+        .x(d => x(d["Fiscal Year"]))
+        .y(d => y(d["Scope 3"]));
+
+    // Add the line
+    svg.append("path")
+        .datum(data)
+        .attr("fill","none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 2)
+        .attr("d", totalLine);
+
+    // Add the line
+    svg.append("path")
+        .datum(data)
+        .attr("fill","none")
+        .attr("stroke", "lightgrey")
+        .attr("stroke-width", 2)
+        .attr("d", line1);
+    
+    // Add the line
+    svg.append("path")
+        .datum(data)
+        .attr("fill","none")
+        .attr("stroke", "grey")
+        .attr("stroke-width", 2)
+        .attr("d", line2);
+    
+    // Add the line
+    svg.append("path")
+        .datum(data)
+        .attr("fill","none")
+        .attr("stroke", "red")
+        .attr("stroke-width", 2)
+        .attr("d", line3);
+
+    svg.append("g")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(x));
+
+    svg.append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y));});
 }
 
 // draw scope 3 chart
@@ -156,10 +271,10 @@ function drawScope3Chart() {
     });
 }
 
-
 // function to render chart on tab switch accordingly
 function updateChart(tab) {
     if (tab == "total") {
+        drawTimeChart();
         drawTotalChart();
     }
     else if (tab == "scope3") {
@@ -172,4 +287,41 @@ function clearChart(svgId) {
   d3.select(svgId).selectAll("*").remove();
 }
 
+function hoverOnBar(event, d){
+    const year = d.data["Fiscal Year"]
+    const scope = d3.select(event.target.parentNode).datum().key;
+    const value = d[1] - d[0]; // calculate value
+
+    //highlight
+    d3.selectAll(".segment")
+        .filter(e => e.data["Fiscal Year"] === year)
+        .attr("opacity", 0.5);
+
+    //show hidden bar
+    d3.selectAll(".hiddenBars")
+        .filter(d => d["Fiscal Year"] === year) //not stacked
+        .attr("opacity", 1);
+
+    //tooltip
+    tooltip
+        .style("opacity", 1)
+        .html(`
+            <strong>Year:</strong> ${year}<br/>
+            <strong>Scope:</strong> ${scope}<br/>
+            <strong>Value:</strong> ${value} MT eCo2
+        `)
+        .style("left", (event.pageX + 10) + "px")
+        .style("top", (event.pageY + 10) + "px");
+}
+    
+
+function hoverOutBar(event, d){
+    d3.selectAll(".segment")
+    .attr("opacity", 1) //return to regular 
+    d3.selectAll(".hiddenBars")
+        .attr("opacity", 0); //hide
+    tooltip.style("opacity",0); //hide
+}
+
+drawTimeChart();
 drawTotalChart();
