@@ -8,7 +8,28 @@
     <script src="d3.v7.min.js"></script>
 </head>
 <body>
-    <h1>Smith College Transportation Emissions</h1>
+    
+    <header>
+        <div class="header-box">
+            <h1>Smith College Transportation Emissions</h1>
+            <p class="subtitle">Curious to know the impact of transportation on our carbon footprint?</p>
+            <p class="author">By: Catherine Weeks, Glory Divine, Mary Alice Wieland</p>
+        </div>
+    </header>
+    
+
+    <section>
+        <h2>Introduction</h2>
+        <p>
+            Smith College is part of a growing network of institutions using the SIMAP greenhouse gas tracking system to measure and understand its environmental impact. 
+            This dataset provides a longitudinal view of campus emissions from 2004 to the present (with some gaps in earlier years), reported in metric tons of greenhouse gases. 
+            This data shows how much carbon the school produces each year. The data is grouped into three categories: Scope 1 (energy made on campus), Scope 2 (energy bought from outside), and Scope 3 (other sources like commuting and travel).
+            Our project focuses on transportation, which is mostly part of Scope 3. This includes how students, faculty, and staff travel to and from campus, as well as work-related trips. 
+            Some of this information comes from surveys done through Qualtrics, where people report how they commute and travel. This helps estimate how much pollution comes from transportation.
+            By focusing on transportation, we want to show how everyday travel choices affect Smith College’s carbon emissions. 
+            We also want to help people on campus-like planners, professors, and students better understand these impacts and think about ways to reduce them in the future.
+        </p>
+    </section>
 
     <!--
     Code to instantiate a tab container and the two tabs inside of it. This way we can hide and show the tabs when we click on each one (hide total emissions when we look at just scope 3 for example)
@@ -24,17 +45,28 @@
         <div class="tab-content">
             <!--divs and svg for the total graphs (which are shown by default)-->
             <div id="total" class="content active">
+                <h2> WHAT IS THIS DATA?</h2>
+                <p> This is a placeholder for the description of the data </p>
                 <svg id="total-chart"></svg>
                 <svg id="time-chart"></svg>
             </div>
+
             <!--divs and svg for the scope 3 graph (which is not shown by default)-->
+            <!-- If you click on a bar in the scope 3 chart, it will display a pie chart for that year. I also added a horizontallegend. -->
             <div id="scope3" class="content">
-                <svg id="scope3-chart"></svg>
+                <H2 class="graph-headers"> WHAT IS THIS DATA?</H2>
+                <p> this is a placeholder for the description of the data on Transportation </p> 
+                <p style="font-weight: 700; color: #1105f2;"> Click on a bar to see the breakdown for that specific year through a pie chart. </p>
+                <div id="legend" class="legend-row"></div>
+                <div class="chart-row">
+                    <svg id="scope3-chart"></svg>
+                    <svg id="pie-chart"></svg>
+                </div>
             </div>
         </div>
+
+
     </div>
-
-
     <script src="index.js"></script>
 </body>
 </html>

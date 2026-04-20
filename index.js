@@ -14,6 +14,7 @@
 const tabs = document.querySelectorAll(".tab");
 const contents = document.querySelectorAll(".content");
 
+// tool tip 
 const tooltip = d3.select("body")
     .append("div")
     .style("position", "absolute")
@@ -43,6 +44,73 @@ tabs.forEach(tab => {
         updateChart(target)
     })
 })
+
+// draw total emissions bar graph
+function drawTotalChart() {
+    const svgID = "#total-chart"
+    clearChart(svgID);
+
+    const svg = d3.select(svgID);
+    // pull height and width from svg in html
+    const width = 600;
+    const height = 400;
+    // margin helps labels sit right
+    const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+
+    svg.attr("width", width).attr("height", height);
+
+    d3.csv("data/total.csv").then(data => {
+        data.forEach(d => {
+        d["Scope 1"] = +d["Scope 1"];
+        d["Scope 2"] = +d["Scope 2"];
+        d["Scope 3"] = +d["Scope 3"];
+    });
+
+    const keys = ["Scope 1", "Scope 2", "Scope 3"];
+    const stack = d3.stack().keys(keys);
+    const stackedData = stack(data);
+
+    const x = d3.scaleBand()
+        .domain(data.map(d => d["Fiscal Year"]))
+        .range([margin.left, width - margin.right])
+        .padding(0.2);
+    
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(data, d =>
+        d["Scope 1"] + d["Scope 2"] + d["Scope 3"]
+        )])
+        .nice()
+        .range([height - margin.bottom, margin.top]);
+
+    const color = d3.scaleOrdinal()
+        .domain(keys)
+        .range(["#9e9d9d", "#6d6d6d", "#f55353"]);
+    
+    svg.selectAll("g.layer")
+        .data(stackedData)
+        .join("g")
+        .attr("fill", d => color(d.key))
+        .selectAll("rect")
+        .data(d => d)
+        .join("rect")
+        .attr("x", d => x(d.data["Fiscal Year"]))
+        .attr("y", d => y(d[1]))
+        .attr("height", d => y(d[0]) - y(d[1]))
+        .attr("width", x.bandwidth())
+        .attr("class", "segment") 
+        .on("mouseover", hoverOnBar)
+        .on("mouseout", hoverOutBar);
+        
+    svg.append("g")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(x));
+
+    svg.append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y));
+    
+    });
+}
 
 // draw total emissions bar graph
 function drawTotalChart() {
@@ -248,6 +316,20 @@ function drawScope3Chart() {
         .domain(keys)
         .range(["#6866e3", "#27be68", "#f55353"]);
     
+    const legend = d3.select("#legend");
+
+    const items = legend.selectAll(".legend-item")
+        .data(keys)
+        .join("div")
+        .attr("class", "legend-item");
+
+    items.append("span")
+        .attr("class", "legend-dot")
+        .style("background", d => color(d));
+
+    items.append("span")
+        .text(d => d);
+
     svg.selectAll("g.layer")
         .data(stackedData)
         .join("g")
@@ -258,7 +340,11 @@ function drawScope3Chart() {
         .attr("x", d => x(d.data["Fiscal Year"]))
         .attr("y", d => y(d[1]))
         .attr("height", d => y(d[0]) - y(d[1]))
-        .attr("width", x.bandwidth());
+        .attr("width", x.bandwidth())
+        .on("click", (event, d) => {
+            console.log(d.data);  //This is for testing and debugging 
+            drawPieChart(d.data);
+        });
 
     svg.append("g")
         .attr("transform", `translate(0,${height - margin.bottom})`)
@@ -271,10 +357,54 @@ function drawScope3Chart() {
     });
 }
 
+function drawPieChart(yearData) {
+    const svgID = "#pie-chart";
+    d3.select(svgID).selectAll("*").remove();
+
+    const width = 400;
+    const height = 450;
+    const radius = Math.min(width, height) / 2;
+
+    const svg = d3.select(svgID)
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", `translate(${width / 2}, ${height / 2})`);
+    
+        svg.append("text")
+        .attr("y", height / 2 - 15 )
+        .attr("text-anchor", "middle")
+        .text(`Emissions Breakdown (tons CO₂e) – Fiscal Year ${yearData["Fiscal Year"]}`);
+    
+    const keys = ["Faculty Total", "Staff Total", "Air"];
+
+    const color = d3.scaleOrdinal()
+        .domain(keys)
+        .range(["#6866e3", "#27be68", "#f55353"]); // I used the same colors as bar chart
+    const pie = d3.pie()
+        .value(key => yearData[key]);
+    const arc = d3.arc()
+        .innerRadius(0)
+        .outerRadius(radius - 10);
+    const arcs = svg.selectAll("arc")
+        .data(pie(keys))
+        .join("g");
+
+    arcs.append("path")
+        .attr("d", arc)
+        .attr("fill", d => color(d.data));
+    
+    arcs.append("text")
+    .attr("transform", d => `translate(${arc.centroid(d)})`)
+    .attr("text-anchor", "middle")
+    .style("font-size", "13px")
+    .style("fill", "black")
+    .text(d => yearData[d.data]);
+}
+
 // function to render chart on tab switch accordingly
 function updateChart(tab) {
     if (tab == "total") {
-        drawTimeChart();
         drawTotalChart();
     }
     else if (tab == "scope3") {
