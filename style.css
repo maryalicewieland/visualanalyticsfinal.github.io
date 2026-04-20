@@ -41,6 +41,76 @@ h1 {
 }
 
 .content.active {
-    display: flex;
+    display: block;
+}
 
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.header-box {
+    background-color: rgb(6, 97, 243); 
+    color: white;
+    padding: 20px 40px;
+    border-radius: 10px;
+}
+.header-box h1, .header-box p {
+    margin: 5px 0;
+}
+.subtitle {
+    color: #0d0d0d; 
+    font-weight: bold;
+}
+
+section {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 20px;
+    text-align: left;
+}
+
+h2 {
+    text-align: center;
+    color: #010101;
+    border-left: 5px solid #0e0d0d;
+    padding-left: 10px;
+    display: inline-block;
+}
+
+.scope3{
+    padding-top: 20px;   
+}
+
+.chart-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.legend-row {
+    display: flex;
+    padding-top: 15px;
+    gap: 20px;
+    font-size: 16px;
+    justify-content: center;
+    margin-bottom: 20px;
+    margin-top: 15px;
+    align-items: center;
+    font-weight: bold;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+}
+
+.legend-dot {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+    border-radius: 2px;
+}
+
+#pie-chart {
+    margin-top: 25px;
 }
