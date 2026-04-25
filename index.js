@@ -281,10 +281,10 @@ function drawScope3Chart() {
         data.forEach(d => {
         d["Faculty Total"] = +d["Faculty Total"];
         d["Staff Total"] = +d["Staff Total"];
-        d["Air"] = +d["Air"];
+        d["Directly Funded Air Travel"] = +d["Directly Funded Air Travel"];
     });
 
-    const keys = ["Faculty Total", "Staff Total", "Air"];
+    const keys = ["Faculty Total", "Staff Total", "Directly Funded Air Travel"];
     const stack = d3.stack().keys(keys);
     const stackedData = stack(data);
 
@@ -295,7 +295,7 @@ function drawScope3Chart() {
     
     const y = d3.scaleLinear()
         .domain([0, d3.max(data, d =>
-        d["Faculty Total"] + d["Staff Total"] + d["Air"]
+        d["Faculty Total"] + d["Staff Total"] + d["Directly Funded Air Travel"]
         )])
         .nice()
         .range([height - margin.bottom, margin.top]);
@@ -304,7 +304,7 @@ function drawScope3Chart() {
         .domain(keys)
         .range(["#6866e3", "#27be68", "#f55353"]);
     
-    const legend = d3.select("#legend");
+    const legend = d3.select("#legend");    
 
     const items = legend.selectAll(".legend-item")
         .data(keys)
@@ -376,7 +376,7 @@ function drawPieChart(yearData) {
         .attr("text-anchor", "middle")
         .text(`Emissions By Part (MTCO2e) – Fiscal Year ${yearData["Fiscal Year"]}`);
     
-    const keys = ["Faculty Total", "Staff Total", "Air"];
+    const keys = ["Faculty Total", "Staff Total", "Directly Funded Air Travel"];
 
     const color = d3.scaleOrdinal()
         .domain(keys)

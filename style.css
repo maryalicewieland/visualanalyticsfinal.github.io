@@ -48,6 +48,16 @@ section {
     
 }
 
+#legend {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
 .legend-row {
     display: flex;
     padding-top: 15px;
