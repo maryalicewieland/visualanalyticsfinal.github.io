@@ -1,7 +1,8 @@
 body {
     /* temporary fonts, I can download the smith college standard ones and implement later*/
-    font-family:Arial, Helvetica, sans-serif;
+    font-family: "Google Sans Flex", sans-serif;
     font-size: 18px;
+    font-weight: 300;
 }
 
 img {
@@ -12,7 +13,6 @@ img {
 }
 
 h1 {
-    font-family: "Lora", serif;
     font-weight: 500;
     font-size: 36px;
     text-align: center;
@@ -24,6 +24,13 @@ h1 {
     justify-content: center;
     align-items: center;
     padding: 10px;
+}
+
+h3 {
+    font-weight: 450;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 section {
@@ -41,9 +48,8 @@ footer {
     width: 100%;
 }
 
-.scope3{
-    padding-top: 50px;
-    
+b {
+    font-weight: 550;
 }
 
 .chart-row {
@@ -53,7 +59,8 @@ footer {
     align-items: flex-start;
     margin-left: 20px;
     padding-bottom: 50px;
-    
+    justify-content: center;
+    align-items: center;
 }
 
 #legend {

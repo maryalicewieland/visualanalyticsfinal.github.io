@@ -143,6 +143,11 @@ function drawTimeChart() {
     const x = d3.scalePoint()
         .domain(data.map(d => d["Fiscal Year"]))
         .range([margin.left, width - margin.right])
+    
+        const xBar = d3.scaleBand()
+        .domain(data.map(d => d["Fiscal Year"]))
+        .range([margin.left, width - margin.right])
+        .padding(0.4);
 
     const y = d3.scaleLinear()
         .domain([0, d3.max(data, d => d.total)])
@@ -154,12 +159,13 @@ function drawTimeChart() {
      .data(data)
      .enter()
      .append("rect")
-     .attr("x", d => x(d["Fiscal Year"]) - barWidth / 2)
+     .attr("x", d => xBar(d["Fiscal Year"]))
      .attr("y", d => y(d.total))
      .attr("height", d => y(0) - y(d.total))
      .attr("width", barWidth)
      .attr("fill","lightblue")
      .attr("class", "hiddenBars") 
+     .attr("opacity", 0)
     
     const totalLine = d3.line()
         .x(d => x(d["Fiscal Year"]))
@@ -409,7 +415,8 @@ function clearChart(svgId) {
 function hoverOnBar(event, d){
     const year = d.data["Fiscal Year"]
     const scope = d3.select(event.target.parentNode).datum().key;
-    const value = d[1] - d[0]; // calculate value
+    // const value = d[1] - d[0]; // calculate value
+    const value = (d[1] - d[0]).toFixed(0);
 
     //highlight
     d3.selectAll(".segment")
