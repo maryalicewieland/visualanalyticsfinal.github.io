@@ -33,6 +33,14 @@ section {
     text-align: left;
 }
 
+footer {
+    background-color: #0B2A50;
+    color: white;
+    padding: 3px;
+    font-size: 12px;
+    width: 100%;
+}
+
 .scope3{
     padding-top: 50px;
     
@@ -67,7 +75,6 @@ section {
     margin-bottom: 20px;
     margin-top: 15px;
     align-items: center;
-    font-weight: bold;
 }
 
 .legend-item {
@@ -80,6 +87,15 @@ section {
     height: 20px;
     margin-right: 6px;
     border-radius: 2px;
+}
+
+.subtitle {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 0 20px;
+    text-align: left;
+    font-size: 16px;
+    color:rgb(83, 83, 83);
 }
 
 #pie-chart {
