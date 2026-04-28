@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="style.css"> 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap" rel="stylesheet">
+    <link href="https://googleapis.com" rel="stylesheet">
+
     <script src="d3.v7.min.js"></script>
 </head>
 <body>
@@ -36,12 +37,13 @@
     </section>
 
 <!-- first graph -->
-    <h3>Overall Carbon Emissions Across All Scopes, Smith College 2009-2024</h3>
+    <h3>Overall Carbon Emissions Across All Scopes</h3>
     <div class="chart-row">
         <svg id="total-chart"></svg>
         <svg id="time-chart"></svg>
     </div>
-    <div class="subtitle">
+
+    <section>
         <p>
             This graph shows carbon emissions at Smith College over time, broken down by scope. Using data from 2009 to 2025, measured in metric tons of CO₂ equivalent (mt CO₂e), it reveals how different sources contribute to the college's overall footprint.
         </p>
@@ -49,23 +51,27 @@
             Looking at the line graph, you can trace the rise and fall of emissions over time, moments of progress, and periods where change has been slower. The dotted line shows the overall emissions trend, while the other lines represent each scope. Together, they show not just numbers, but a trajectory, where Smith has been, and where it might be headed.
         </p>
     </div>
+</section>
 
 <!-- second graph -->
-    <h3>Scope 3: A Closer Look at Transportation Carbon Emissions, Smith College 2009-2024</h3>
+    <h3>Scope 3: A Closer Look at Transportation Carbon Emissions</h3>
     <div id="legend" class="legend-row"></div>
     <div class="chart-row">
         <svg id="scope3-chart"></svg>
         <svg id="pie-chart"></svg>
     </div>
-    <div class="subtitle">
+
+    <section>
         <p>
-            This takes a closer look at Scope 3. The bar graph shows emissions from 2009 to 2024, focusing on three areas: faculty commuting, staff commuting, and college-funded air travel .
+            This visualization represents Scope 3 emissions, which specifically target what is emitted created by <b>transportation</b> to and from the college.
+            The bar graph above details emissions in metric tons of Co2 equivalent from 2009 to 2024, focusing on three areas: faculty commuting, staff commuting, and directly college-funded air travel. 
+            Directly funded air travel does not include emissions from students who travel to study abroad.
         </p>
         <p>
-            Each bar represents a year, but each click reveals a deeper layer of the story. When you select a bar, a pie chart appears, breaking down that year's emissions across the three categories in metric tons of CO₂e.
+            Each bar represents a year, but upon clicking a pie chart appears, which breaks down that year's emissions across the three sub categories categories of  in metric tons of CO₂e.
         </p>
     </div>
-
+</section>
         <section>
         <h3>How was the data collected?</h3>
         <p>
@@ -74,15 +80,6 @@
         </p>
     </section>
 
-    <section>
-        <h3>About CEEDS</h3>
-        <p>
-            The Center for the Environment, Ecological Design and Sustainability (CEEDS) exists with one purpose: We facilitate academic and applied experiences for students that help them excel at integrating knowledge across disciplines, in support of environmental decisions and action.
-        </p>
-        <p>
-            To reach that purpose, we support the integration of sustainable practices into Smith's operations and connect campus operations with student learning. We also support faculty in their efforts to deepen their understanding of salient environmental issues and to integrate those issues into the curricula. We promote institutional innovation and progress toward the college's commitment to be a model of sustainability.
-        </p>
-    </section>
 
     <section>
         <h3>Moving forward</h3>
@@ -95,7 +92,18 @@
         <p>
             Electric vehicles offer a way to keep the convenience of driving while greatly lowering greenhouse gas emissions compared to traditional gas-powered cars. As more members of the Smith community choose electric vehicles, Scope 3 emissions from commuting could decrease in a measurable way. At the same time, everyday choices still matter. Carpooling, biking, walking, or using public transit all contribute to lowering emissions. Year by year, changes in commuting and travel patterns shape the rise and fall of Scope 3 emissions.
         </p>
+
+    </section>
+
+    <section>
+        <h3>About CEEDS</h3>
         <p>
+            The Center for the Environment, Ecological Design and Sustainability (CEEDS) exists with one purpose: We facilitate academic and applied experiences for students that help them excel at integrating knowledge across disciplines, in support of environmental decisions and action.
+        </p>
+        <p>
+            To reach that purpose, we support the integration of sustainable practices into Smith's operations and connect campus operations with student learning. We also support faculty in their efforts to deepen their understanding of salient environmental issues and to integrate those issues into the curricula. We promote institutional innovation and progress toward the college's commitment to be a model of sustainability.
+        </p>
+                <p>
             If you are interested in learning more about this dataset, Smith's goal of carbon neutrality, or ways to reduce emissions, feel free to contact the CEEDS center at (ceeds@smith.edu). Students interested in working on a capstone project focused on environmental issues or reducing carbon footprints are also encouraged to reach out.
         </p>
     </section>
