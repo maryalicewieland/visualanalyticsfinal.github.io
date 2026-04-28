@@ -367,8 +367,8 @@ function drawPieChart(yearData) {
     const svgID = "#pie-chart";
     d3.select(svgID).selectAll("*").remove();
 
-    const width = 400;
-    const height = 350;
+    const width = 500;
+    const height = 437;
     const radius = Math.min(width, height) / 3;
 
     const svg = d3.select(svgID)
@@ -392,6 +392,9 @@ function drawPieChart(yearData) {
     const arc = d3.arc()
         .innerRadius(0)
         .outerRadius(radius - 10);
+    const textArc = d3.arc()
+        .innerRadius(0)
+        .outerRadius(radius + 60);
     const arcs = svg.selectAll("arc")
         .data(pie(keys))
         .join("g");
@@ -401,11 +404,12 @@ function drawPieChart(yearData) {
         .attr("fill", d => color(d.data));
     
     arcs.append("text")
-    .attr("transform", d => `translate(${arc.centroid(d)})`)
+    .attr("transform", d => `translate(${textArc.centroid(d)})`)
     .attr("text-anchor", "middle")
     .style("font-size", "13px")
     .style("fill", "black")
     .text(d => yearData[d.data]);
+    
 }
 
 function clearChart(svgId) {
