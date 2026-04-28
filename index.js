@@ -308,7 +308,7 @@ function drawScope3Chart() {
 
     const color = d3.scaleOrdinal()
         .domain(keys)
-        .range(["#6866e3", "#27be68", "#f55353"]);
+        .range(["#f55353", "steelblue", "#9e9d9d"]);
     
     const legend = d3.select("#legend");    
 
@@ -386,7 +386,7 @@ function drawPieChart(yearData) {
 
     const color = d3.scaleOrdinal()
         .domain(keys)
-        .range(["#6866e3", "#27be68", "#f55353"]); // I used the same colors as bar chart
+        .range(["#f55353", "steelblue", "#9e9d9d"]); // I used the same colors as bar chart
     const pie = d3.pie()
         .value(key => yearData[key]);
     const arc = d3.arc()
