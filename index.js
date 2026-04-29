@@ -100,7 +100,7 @@ function drawTotalChart() {
         .text("MTCO2e");
 
     svg.append("text")
-        .attr("x", width / 2)
+        .attr("x", 320)
         .attr("y", margin.top / 2)
         .attr("text-anchor", "middle")
         .style("font-size", "20px")
@@ -278,7 +278,7 @@ function drawTimeChart() {
             });
 
         svg.append("text")
-            .attr("x", width / 2)
+            .attr("x", 320)
             .attr("y", margin.top / 2)
             .attr("text-anchor", "middle")
             .style("font-size", "20px")
@@ -292,8 +292,8 @@ function drawScope3Chart() {
 
     const svg = d3.select(svgID);
     const width = 600;
-    const height = 400;
-    const margin = { top: 20, right: 30, bottom: 40, left: 80 };
+    const height = 450; 
+    const margin = { top: 50, right: 30, bottom: 40, left: 80 };
 
     svg.attr("width", width).attr("height", height);
 
@@ -364,7 +364,7 @@ function drawScope3Chart() {
     
     svg.append("text")
         .attr("text-anchor", "middle")
-        .attr("x", width / 2)
+        .attr("x", 320)
         .attr("y", height - margin.bottom + 40)
         .text("Fiscal Years");
 
@@ -374,6 +374,15 @@ function drawScope3Chart() {
         .attr("x", -(height / 2))
         .attr("y", margin.left - 60)
         .text("MTCO2e");
+    
+    svg.append("text")
+        .attr("x", 320)
+        .attr("y", margin.top / 2)
+        .attr("text-anchor", "middle")
+        .style("font-size", "20px")
+        .text("Total Transportation Emissions by Fiscal Year (2009–2024)");
+    
+    
     });
 }
 
