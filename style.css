@@ -44,8 +44,9 @@ h1 {
     align-items: center;
     max-width: 900px;
     font-size: 36px;
-    font-weight: 550;
+    font-weight: 450;
     transform: scaleY(1.05); /* Stretches height by 150% */    
+    padding: 30px;
 }
 
 h2 {
@@ -98,6 +99,17 @@ footer p {
     max-width: 900px;
     margin-left: auto;
     margin-right: auto;
+}
+
+header {
+    background-color: #0B2A50;
+    color: white;
+    width: 100%;
+
+    padding: 24px 20px;
+    font-size: 14px;
+    line-height: 1.5;
+    box-sizing: border-box;
 }
 
 /* make the bold actually bold */
